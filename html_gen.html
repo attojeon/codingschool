@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <!-- HTML generated using hilite.me --><div style="background: #111111; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0086d2">&#39;&#39;&#39;</span>
+<span style="color: #0086d2">  - HTML 파일 만들기 </span>
+<span style="color: #0086d2">&#39;&#39;&#39;</span>
+
+<span style="color: #fb660a; font-weight: bold">from</span> <span style="color: #ffffff">bs4</span> <span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">BeautifulSoup</span>
+<span style="color: #fb660a; font-weight: bold">import</span> <span style="color: #ffffff">requests</span> 
+
+<span style="color: #ffffff">url</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;https://wikidocs.net&#39;</span>
+<span style="color: #ffffff">book_list</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">[]</span>
+<span style="color: #ffffff">docfile</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">r&quot;publish/rec.html&quot;</span>
+
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">show</span><span style="color: #ffffff">(books):</span>
+  <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">book</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">books:</span>
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">b</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">book.items():</span>
+      <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(f</span><span style="color: #0086d2">&quot;{b[0]}: {b[1]}&quot;</span><span style="color: #ffffff">)</span>
+    <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(</span><span style="color: #0086d2">&#39;\n&#39;</span><span style="color: #ffffff">)</span>
+
+<span style="color: #fb660a; font-weight: bold">def</span> <span style="color: #ff0086; font-weight: bold">save</span><span style="color: #ffffff">(books,</span> <span style="color: #ffffff">filename):</span>
+  <span style="color: #ffffff">head</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;&#39;&#39;</span>
+<span style="color: #0086d2">  &lt;!DOCTYPE html&gt;</span>
+<span style="color: #0086d2">  &lt;html lang=&quot;en&quot;&gt;</span>
+<span style="color: #0086d2">  &lt;head&gt;</span>
+<span style="color: #0086d2">      &lt;meta charset=&quot;UTF-8&quot;&gt;</span>
+<span style="color: #0086d2">      &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;</span>
+<span style="color: #0086d2">      &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;</span>
+<span style="color: #0086d2">      &lt;title&gt;위키독의 추천책&lt;/title&gt;</span>
+<span style="color: #0086d2">  &lt;/head&gt;</span>
+<span style="color: #0086d2">  &lt;body&gt;</span>
+<span style="color: #0086d2">    &lt;h1&gt;위키독의 베스트북&lt;/h1&gt;</span>
+<span style="color: #0086d2">  &#39;&#39;&#39;</span>
+  <span style="color: #ffffff">tail</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;&#39;&#39;</span>
+<span style="color: #0086d2">  &lt;/body&gt;</span>
+<span style="color: #0086d2">  &lt;/html&gt;</span>
+<span style="color: #0086d2">  &#39;&#39;&#39;</span>
+  <span style="color: #ffffff">table_open</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;    &lt;div&gt;\n      &lt;table&gt;\n&#39;</span>   <span style="color: #008800; font-style: italic; background-color: #0f140f"># &lt;tr&gt;&lt;td&gt;책제목&lt;/td&gt;&lt;td&gt;파이썬....&lt;/td&gt;&lt;tr&gt;</span>
+  <span style="color: #ffffff">table_close</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;      &lt;/table&gt;\n    &lt;/div&gt;\n    &lt;hr&gt;\n&#39;</span>
+
+  <span style="color: #ffffff">f</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">open(filename,</span> <span style="color: #0086d2">&quot;wt&quot;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">encoding=</span><span style="color: #0086d2">&#39;utf-8&#39;</span><span style="color: #ffffff">)</span>
+  <span style="color: #ffffff">f.write(head)</span>
+  <span style="color: #ffffff">body</span> <span style="color: #ffffff">=</span> <span style="color: #0086d2">&#39;&#39;</span>
+  <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">book</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">books:</span>
+    <span style="color: #ffffff">body</span> <span style="color: #ffffff">+=</span> <span style="color: #ffffff">table_open</span>
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">b</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">book.items():</span>
+      <span style="color: #008800; font-style: italic; background-color: #0f140f"># print(f&quot;{b[0]}: {b[1]}&quot;)</span>
+      <span style="color: #fb660a; font-weight: bold">if</span> <span style="color: #ffffff">b[</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">]</span> <span style="color: #ffffff">==</span> <span style="color: #0086d2">&#39;북커버&#39;</span><span style="color: #ffffff">:</span>
+        <span style="color: #fb660a; font-weight: bold">pass</span>
+        <span style="color: #ffffff">body</span> <span style="color: #ffffff">+=</span> <span style="color: #ffffff">f</span><span style="color: #0086d2">&#39;      &lt;tr&gt;&lt;td&gt;{b[0]}&lt;/td&gt;&lt;td&gt;&lt;img src=\&#39;{b[1]}\&#39;&gt;&lt;/td&gt;&lt;/tr&gt;\n&#39;</span>
+      <span style="color: #fb660a; font-weight: bold">else</span><span style="color: #ffffff">:</span>
+        <span style="color: #ffffff">body</span> <span style="color: #ffffff">+=</span> <span style="color: #ffffff">f</span><span style="color: #0086d2">&#39;      &lt;tr&gt;&lt;td&gt;{b[0]}&lt;/td&gt;&lt;td&gt;{b[1]}&lt;/td&gt;&lt;/tr&gt;\n&#39;</span>
+    <span style="color: #ffffff">body</span> <span style="color: #ffffff">+=</span> <span style="color: #ffffff">table_close</span>
+  <span style="color: #ffffff">f.write(body)</span>
+  <span style="color: #ffffff">f.write(tail)</span>
+  <span style="color: #ffffff">f.close()</span>
+
+
+<span style="color: #ffffff">response</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">requests.get(url)</span>
+<span style="color: #fb660a; font-weight: bold">if</span> <span style="color: #ffffff">response.status_code</span> <span style="color: #ffffff">==</span> <span style="color: #0086f7; font-weight: bold">200</span><span style="color: #ffffff">:</span>
+    <span style="color: #ffffff">htmlsource</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">response.content</span> 
+    <span style="color: #ffffff">soup</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">BeautifulSoup(htmlsource,</span> <span style="color: #0086d2">&#39;html.parser&#39;</span><span style="color: #ffffff">)</span>
+    <span style="color: #ffffff">ms</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">soup.find_all(class_=</span><span style="color: #0086d2">&#39;media&#39;</span><span style="color: #ffffff">)</span>
+    <span style="color: #fb660a; font-weight: bold">for</span> <span style="color: #ffffff">m</span> <span style="color: #ffffff">in</span> <span style="color: #ffffff">ms:</span>
+      <span style="color: #ffffff">img</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">m.find(class_=</span><span style="color: #0086d2">&#39;media-left&#39;</span><span style="color: #ffffff">).find(</span><span style="color: #0086d2">&#39;img&#39;</span><span style="color: #ffffff">).attrs[</span><span style="color: #0086d2">&#39;src&#39;</span><span style="color: #ffffff">]</span>
+      <span style="color: #ffffff">title</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">m.find(class_=</span><span style="color: #0086d2">&#39;media-heading&#39;</span><span style="color: #ffffff">).find(</span><span style="color: #0086d2">&#39;a&#39;</span><span style="color: #ffffff">).text</span>
+      <span style="color: #ffffff">divs</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">m.find(class_=</span><span style="color: #0086d2">&#39;book-detail&#39;</span><span style="color: #ffffff">).find_all(</span><span style="color: #0086d2">&#39;div&#39;</span><span style="color: #ffffff">)</span>
+      <span style="color: #ffffff">author</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">divs[</span><span style="color: #0086f7; font-weight: bold">0</span><span style="color: #ffffff">].text.replace(</span><span style="color: #0086d2">&#39;\n&#39;</span><span style="color: #ffffff">,</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">).replace(</span><span style="color: #0086d2">&#39; &#39;</span><span style="color: #ffffff">,</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">).replace(</span><span style="color: #0086d2">&#39;-&#39;</span><span style="color: #ffffff">,</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">)</span>
+      <span style="color: #ffffff">pubd</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">divs[</span><span style="color: #0086f7; font-weight: bold">1</span><span style="color: #ffffff">].text.replace(</span><span style="color: #0086d2">&#39;\n&#39;</span><span style="color: #ffffff">,</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">).replace(</span><span style="color: #0086d2">&#39; &#39;</span><span style="color: #ffffff">,</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">).replace(</span><span style="color: #0086d2">&#39;-&#39;</span><span style="color: #ffffff">,</span><span style="color: #0086d2">&#39;&#39;</span><span style="color: #ffffff">)</span>
+      <span style="color: #ffffff">book</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">{}</span>
+      <span style="color: #ffffff">book[</span><span style="color: #0086d2">&#39;책제목&#39;</span><span style="color: #ffffff">]</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">title</span>
+      <span style="color: #ffffff">book[</span><span style="color: #0086d2">&#39;작가&#39;</span><span style="color: #ffffff">]</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">author</span>
+      <span style="color: #ffffff">book[</span><span style="color: #0086d2">&#39;출판날짜&#39;</span><span style="color: #ffffff">]</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">pubd</span>
+      <span style="color: #ffffff">book[</span><span style="color: #0086d2">&#39;북커버&#39;</span><span style="color: #ffffff">]</span> <span style="color: #ffffff">=</span> <span style="color: #ffffff">url</span> <span style="color: #ffffff">+</span> <span style="color: #ffffff">img</span>
+      <span style="color: #ffffff">book_list.append(book)</span>
+    <span style="color: #ffffff">show(book_list)</span> 
+    <span style="color: #ffffff">save(book_list,</span> <span style="color: #ffffff">docfile)</span>
+<span style="color: #fb660a; font-weight: bold">else</span><span style="color: #ffffff">:</span>
+    <span style="color: #fb660a; font-weight: bold">print</span><span style="color: #ffffff">(</span><span style="color: #0086d2">&quot;web response error :&quot;</span><span style="color: #ffffff">,</span> <span style="color: #ffffff">response.status_code)</span>
+  
+</pre></div>
+
+
+</body>
+</html>
